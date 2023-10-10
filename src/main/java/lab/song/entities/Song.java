@@ -8,6 +8,7 @@ import lab.album.entities.Album;
 import lab.artist.entities.Artist;
 import lab.user.entities.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Song implements Serializable{
     private UUID id;
     private String name;

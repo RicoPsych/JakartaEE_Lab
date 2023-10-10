@@ -40,7 +40,7 @@ public class UserService {
     public void delete(UUID id) {
         userRepository.delete(userRepository.find(id).orElseThrow());
     }
-    public void updatePortrait(UUID id, InputStream is) {
+    public void updateAvatar(UUID id, InputStream is) {
         userRepository.find(id).ifPresent(user -> {
             try {
                 user.setAvatar(is.readAllBytes());

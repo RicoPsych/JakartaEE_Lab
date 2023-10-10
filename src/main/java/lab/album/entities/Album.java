@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import lab.song.entities.Song;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Album implements Serializable{
     private UUID id;
     private String name;

@@ -3,6 +3,7 @@ package lab.user.dto;
 import java.util.List;
 import java.util.UUID;
 
+import lab.user.entities.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +38,13 @@ public class GetUsersResponse {
     @Singular
     private List<_User> users;
 
-
+    public static GetUsersResponse mapper(List<User> users){
+        return GetUsersResponse.builder().users(users.stream()
+            .map(user-> _User.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .build())
+            .toList())
+        .build();
+    }
 }

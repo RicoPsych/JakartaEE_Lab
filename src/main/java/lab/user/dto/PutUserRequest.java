@@ -1,12 +1,26 @@
 package lab.user.dto;
 
-import java.util.List;
+import lab.user.entities.User;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import lab.song.entities.Song;
-import lombok.Singular;
 
+@ToString
+@Setter
+@EqualsAndHashCode
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PutUserRequest {
     private String name;
     
     //private List<Song> favourites;
+
+    public static User mapper(PutUserRequest request){
+        return User.builder().name(request.getName()).build();
+    }
 }
