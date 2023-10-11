@@ -10,7 +10,7 @@ import lab.user.dto.GetUsersResponse;
 import lab.user.dto.PatchUserRequest;
 import lab.user.dto.PutUserRequest;
 
-public interface UserControler {
+public interface UserController {
     GetUsersResponse getUsers();
     GetUserResponse getUser(UUID id);
 

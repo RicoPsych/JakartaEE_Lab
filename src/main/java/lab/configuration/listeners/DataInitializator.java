@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebListener;
 
 @WebListener
 public class DataInitializator implements ServletContextListener{
-        @Override
+    @Override
     public void contextInitialized(ServletContextEvent event) {
     
     }

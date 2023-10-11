@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lab.Patterns;
-import lab.user.controler.UserControler;
+import lab.user.controler.UserController;
 
 @WebServlet(urlPatterns = {
         ServletApi.Paths.API + "/*"
@@ -26,7 +26,7 @@ public class ServletApi extends HttpServlet {
 
     }
 
-    private UserControler userControler;
+    private UserController userControler;
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
@@ -42,7 +42,7 @@ public class ServletApi extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        userControler = (UserControler) getServletContext().getAttribute("characterController");
+        userControler = (UserController) getServletContext().getAttribute("characterController");
     }
 
     @SuppressWarnings("RedundantThrows")

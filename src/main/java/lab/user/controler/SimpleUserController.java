@@ -1,9 +1,9 @@
 package lab.user.controler;
 
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.inject.Inject;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.NotFoundException;
 import lab.user.dto.GetUserResponse;
@@ -13,11 +13,12 @@ import lab.user.dto.PutUserRequest;
 import lab.user.entities.User;
 import lab.user.service.UserService;
 
-public class SimpleUserControler implements UserControler {
+public class SimpleUserController implements UserController {
 
     private final UserService service;
 
-    public SimpleUserControler(UserService service){
+    @Inject
+    public SimpleUserController(UserService service){
         this.service = service;
     }
 
