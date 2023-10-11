@@ -1,0 +1,14 @@
+DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
+
+###
+
+PUT http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="portrait"; filename="sigrid.png'
+
+< src/main/resources/lab/configuration/avatar/sigrid.png
+--boundary--
+
+###

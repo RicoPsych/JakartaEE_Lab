@@ -12,10 +12,13 @@
         <listener>
             <listener-class>lab.configuration.listeners.CreateServices</listener-class>
         </listener>
-    
         <listener>
             <listener-class>lab.configuration.listeners.CreateControlers</listener-class>
         </listener>
     
-
+        <listener>
+            <listener-class>lab.configuration.listeners.DataInitializator</listener-class>
+        </listener>
+    
+        
 </web-app>

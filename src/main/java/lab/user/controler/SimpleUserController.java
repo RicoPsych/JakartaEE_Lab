@@ -3,9 +3,8 @@ package lab.user.controler;
 import java.io.InputStream;
 import java.util.UUID;
 
-import jakarta.inject.Inject;
-import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotFoundException;
+import lab.exception.BadRequestException;
+import lab.exception.NotFoundException;
 import lab.user.dto.GetUserResponse;
 import lab.user.dto.GetUsersResponse;
 import lab.user.dto.PatchUserRequest;
@@ -17,7 +16,7 @@ public class SimpleUserController implements UserController {
 
     private final UserService service;
 
-    @Inject
+    
     public SimpleUserController(UserService service){
         this.service = service;
     }
@@ -43,7 +42,7 @@ public class SimpleUserController implements UserController {
             
             service.create(user);
         } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+           throw new BadRequestException(ex);
         }
     }
 
@@ -62,16 +61,17 @@ public class SimpleUserController implements UserController {
         service.find(id).ifPresentOrElse(
             entity -> service.delete(id),
             () -> {
-                throw new NotFoundException();
+                //throw new NotFoundException();
             }
         );
     }
 
     @Override
     public byte[] getUserAvatar(UUID id) {
-        return service.find(id)
-            .map(User::getAvatar)
-            .orElseThrow(NotFoundException::new);
+        return service.getAvatar(id);
+        // return service.find(id)
+        //     .map(User::getAvatar)
+        //     .orElseThrow(NotFoundException::new);
     }
 
     @Override
@@ -83,5 +83,24 @@ public class SimpleUserController implements UserController {
             }
         );
     }
-    
+    @Override
+    public void postUserAvatar(UUID id, InputStream avatar) {
+       service.find(id).ifPresentOrElse(
+            entity -> service.updateAvatar(id, avatar),
+            () -> {
+                throw new NotFoundException();
+            }
+        );
+    }
+
+    @Override
+    public void deleteUserAvatar(UUID id) {
+       service.find(id).ifPresentOrElse(
+        
+            entity -> service.deleteAvatar(id),
+            () -> {
+                throw new NotFoundException();
+            }
+        );
+    }
 }

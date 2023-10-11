@@ -12,9 +12,12 @@ public class CreateControlers implements ServletContextListener{
     @Override
     public void contextInitialized(ServletContextEvent event) {
         UserService userService = (UserService) event.getServletContext().getAttribute("userService");
-        //tODO NIE DIZALA AAAAAAAAAA
-        UserController controler = new SimpleUserController(userService);
 
-        event.getServletContext().setAttribute("userControler", controler);
+
+        UserController controller = new SimpleUserController(userService);
+
+        event.getServletContext().setAttribute("userController", controller);
+
+        System.out.println("Controllers Created");
     }
 }
