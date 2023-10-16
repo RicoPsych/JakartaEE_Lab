@@ -29,10 +29,11 @@ public class Album implements Serializable{
     private List<Song> songs;
     private LocalDate releaseDate;
     private Genre genre;
-}
 
-enum Genre {
+    public enum Genre {
     Rock,
     Pop,
     Indie
+    }
 }
+

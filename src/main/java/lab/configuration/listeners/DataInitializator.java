@@ -1,6 +1,8 @@
 package lab.configuration.listeners;
 
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -11,6 +13,9 @@ import jakarta.inject.Inject;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import lab.album.entities.Album;
+import lab.album.entities.Album.Genre;
+import lab.album.service.AlbumService;
 import lab.artist.entities.Artist;
 import lab.artist.service.ArtistService;
 import lab.song.entities.Song;
@@ -24,15 +29,18 @@ public class DataInitializator {
     private final UserService userService;
     private final SongService songService;
     private final ArtistService artistService;
+    private final AlbumService albumService;
 
     private final RequestContextController requestContextController;
 
     @Inject
-    DataInitializator(UserService userService, RequestContextController requestContextController, SongService songService, ArtistService artistService){
+    DataInitializator(UserService userService, RequestContextController requestContextController
+    , SongService songService, ArtistService artistService, AlbumService albumService){
         this.userService = userService;
         this.requestContextController = requestContextController;
         this.artistService = artistService;
         this.songService = songService;
+        this.albumService = albumService;
     }
 
     
@@ -44,19 +52,46 @@ public class DataInitializator {
     private void init() {
         requestContextController.activate();
 
-        artistService.create(Artist.builder().id(UUID.fromString("f98e668-364c-4766-a87d-a3a909800ebf")).name("Balthazar").retired(false).build());
+//        artistService.create(Artist.builder().id(UUID.fromString("f98e668-364c-4766-a87d-a3a909800ebf")).name("Balthazar").retired(false).build());
+        Album a1 = Album.builder().id(UUID.fromString("8d2e3678-1678-4550-8aeb-1b9223802356"))
+            .name("Rats")
+            .genre(Genre.Indie)
+            .releaseDate(LocalDate.of(2012, 10,15))
+        .build();
+        Album a2 = Album.builder().id(UUID.fromString("6c3f7514-d5a2-4975-8bda-99dd7b243792"))
+            .name("Applause")
+            .genre(Genre.Indie)
+            .releaseDate(LocalDate.of(2011, 9,13))
+        .build();
 
-        songService.create(Song.builder()
-        .name("Linger on")
-        .author(artistService.find(UUID.fromString("f98e668-364c-4766-a87d-a3a909800ebf")).get())
+        albumService.create(a1);
+        albumService.create(a2);
+        
+        Song s1 = Song.builder()
+        .id(UUID.fromString("008d02dd-e112-4c6f-b44d-7d4c9fc04a08"))
+        .name("Sinking Ship")
+        .album(a1)
+        //.author(artistService.find(UUID.fromString("3cddb94c-d134-4c36-9645-003d058f84cb")).get())
         .duration(300)
         .rating(4.3f)
-        
-        .build());
+        .build();
+
+        Song s2 = Song.builder()
+        .id(UUID.fromString("68f62a60-710a-4521-997c-56c842d39339"))
+        .name("The Boatman")
+        .album(a2)
+        //.author(artistService.find(UUID.fromString("56df0e3e-3458-476b-bc1b-01d42213430e")).get())
+        .duration(250)
+        .rating(4.3f)
+        .build();
+
+        songService.create(s1);
+        songService.create(s2);
 
         userService.create(User.builder()
             .id(UUID.fromString("f901e668-364c-4f66-ad9d-a3a905f80ebf"))
             .name("Stefan")
+            .favourites(List.of(s1,s2))
            // .avatar(getResourceAsByteArray("../avatar/zereni.png"))
             .build());
 
