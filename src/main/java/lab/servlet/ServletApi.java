@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
 import jakarta.servlet.ServletException;
@@ -32,6 +33,11 @@ public class ServletApi extends HttpServlet {
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
+    @Inject
+    public ServletApi (UserController userController){
+        this.userController = userController;
+    }
+
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getMethod().equals("PATCH")) {
@@ -41,11 +47,6 @@ public class ServletApi extends HttpServlet {
         }
     }
 
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        userController = (UserController) getServletContext().getAttribute("userController");
-    }
 
     @SuppressWarnings("RedundantThrows")
     @Override
@@ -58,12 +59,17 @@ public class ServletApi extends HttpServlet {
             if (path.matches(Patterns.USERS.pattern())) {
                 response.setContentType("application/json");
                 response.getWriter().write(jsonb.toJson(userController.getUsers()));
+
                 return;
             }
             else if (path.matches(Patterns.USER.pattern())) {
                 response.setContentType("application/json");
                 UUID uuid = extractUuid(Patterns.USER, path);
-                response.getWriter().write(jsonb.toJson(userController.getUser(uuid)));
+                try {
+                    response.getWriter().write(jsonb.toJson(userController.getUser(uuid)));
+                } catch (Exception e) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
                 return;
             } 
             //else if (path.matches(Patterns.PROFESSIONS.pattern())) {
@@ -84,9 +90,14 @@ public class ServletApi extends HttpServlet {
             else if (path.matches(Patterns.USER_AVATAR.pattern())) {
                 response.setContentType("image/png");//could be dynamic but atm we support only one format
                 UUID uuid = extractUuid(Patterns.USER_AVATAR, path);
-                byte[] portrait = userController.getUserAvatar(uuid);
-                response.setContentLength(portrait.length);
-                response.getOutputStream().write(portrait);
+                try {
+                    byte[] portrait = userController.getUserAvatar(uuid);
+                    response.setContentLength(portrait.length);
+                    response.getOutputStream().write(portrait);
+                } catch (Exception e) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+
                 return;
             }
         }

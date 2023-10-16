@@ -4,11 +4,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.UUID;
 
-public class FileSystemAccess{
-    private final String PATH = "C:\\Users\\Hubert\\INFORMATYKA\\SEM7\\JakartaEE_Lab\\target\\avatars";
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
+@ApplicationScoped
+public class FileSystemAccess{
+    private final String PATH = "D:\\Informatyka\\SEM7\\JavaEE\\git-lab1\\JakartaEE_Lab\\target\\avatars";
+
+    @Inject
+    public FileSystemAccess(){
+        
+    }
 
     public void writeAvatar(UUID id, InputStream avatar){
         try {
@@ -28,11 +37,12 @@ public class FileSystemAccess{
 
 
 
-    public byte[] getAvatar(UUID id){
+    public Optional<byte[]> getAvatar(UUID id){
         try {
-            return Files.readAllBytes(Path.of(PATH,id.toString()));
+            return Optional.of(Files.readAllBytes(Path.of(PATH,id.toString())));
         } catch (IOException ex) {
-            throw new IllegalStateException(ex);
+            return Optional.empty();
+//            throw new IllegalStateException(ex);
         }
     }
 
@@ -40,7 +50,7 @@ public class FileSystemAccess{
         try {
             Files.delete(Path.of(PATH,id.toString()));
         } catch (IOException ex) {
-            throw new IllegalStateException(ex);
+            //throw new IllegalStateException(ex);
         }
     }
 }

@@ -3,6 +3,8 @@ package lab.user.controler;
 import java.io.InputStream;
 import java.util.UUID;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 import lab.exception.BadRequestException;
 import lab.exception.NotFoundException;
 import lab.user.dto.GetUserResponse;
@@ -12,11 +14,12 @@ import lab.user.dto.PutUserRequest;
 import lab.user.entities.User;
 import lab.user.service.UserService;
 
+@RequestScoped
 public class SimpleUserController implements UserController {
 
     private final UserService service;
 
-    
+    @Inject
     public SimpleUserController(UserService service){
         this.service = service;
     }
@@ -68,10 +71,8 @@ public class SimpleUserController implements UserController {
 
     @Override
     public byte[] getUserAvatar(UUID id) {
-        return service.getAvatar(id);
-        // return service.find(id)
-        //     .map(User::getAvatar)
-        //     .orElseThrow(NotFoundException::new);
+        return service.getAvatar(id)
+            .orElseThrow(NotFoundException::new);
     }
 
     @Override

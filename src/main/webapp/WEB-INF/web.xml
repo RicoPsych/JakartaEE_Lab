@@ -4,21 +4,4 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
          version="6.0"
          metadata-complete="false">
-
-        <listener>
-            <listener-class>lab.configuration.listeners.CreateDataSource</listener-class>
-        </listener>
-    
-        <listener>
-            <listener-class>lab.configuration.listeners.CreateServices</listener-class>
-        </listener>
-        <listener>
-            <listener-class>lab.configuration.listeners.CreateControlers</listener-class>
-        </listener>
-    
-        <listener>
-            <listener-class>lab.configuration.listeners.DataInitializator</listener-class>
-        </listener>
-    
-        
 </web-app>

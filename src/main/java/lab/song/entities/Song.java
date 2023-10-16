@@ -28,8 +28,8 @@ public class Song implements Serializable{
     private String name;
     private float rating;
     private int duration;
-    private Album album;
+    //private Album album;
     private Artist author;
-
-    private List<User> isFavourite;
+    private User owner;
+//    private List<User> isFavourite;
 }

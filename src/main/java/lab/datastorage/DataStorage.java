@@ -6,14 +6,20 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import lab.album.entities.Album;
 import lab.artist.entities.Artist;
 import lab.serialization.component.CloningUtility;
 import lab.song.entities.Song;
 import lab.user.entities.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.extern.java.Log;
 
 @Getter
+@Log
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class DataStorage {
     private final Set<User> users = new HashSet<>();
     private final Set<Artist> artists = new HashSet<>();

@@ -7,19 +7,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import lab.filesystemaccess.FileSystemAccess;
 import lab.song.entities.Song;
 import lab.song.repository.SongRepository;
 import lab.user.entities.User;
 import lab.user.repository.UserRepository;
+import lombok.NoArgsConstructor;
 
+@ApplicationScoped
+@NoArgsConstructor(force = true)
 public class UserService {
     private final UserRepository userRepository;
     // private final SongRepository songRepository;
     private final FileSystemAccess fileSystem;
     
 
-
+    @Inject
     public UserService(UserRepository userRepository,
                     FileSystemAccess fileSystem
                         //, SongRepository songRepository
@@ -47,7 +52,7 @@ public class UserService {
         userRepository.delete(userRepository.find(id).orElseThrow());
     }
 
-    public byte[] getAvatar(UUID id){
+    public Optional<byte[]> getAvatar(UUID id){
         return fileSystem.getAvatar(id);
     } 
     public void updateAvatar(UUID id, InputStream is) {
