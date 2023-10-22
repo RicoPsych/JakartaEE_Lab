@@ -1,8 +1,9 @@
-package lab.user.controler;
+package lab.user.controller;
 
 import java.io.InputStream;
 import java.util.UUID;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import lab.exception.BadRequestException;
@@ -10,11 +11,12 @@ import lab.exception.NotFoundException;
 import lab.user.dto.GetUserResponse;
 import lab.user.dto.GetUsersResponse;
 import lab.user.dto.PatchUserRequest;
+import lab.user.dto.PostUserRequest;
 import lab.user.dto.PutUserRequest;
 import lab.user.entities.User;
 import lab.user.service.UserService;
 
-@RequestScoped
+@ApplicationScoped
 public class SimpleUserController implements UserController {
 
     private final UserService service;
@@ -29,7 +31,20 @@ public class SimpleUserController implements UserController {
     public GetUsersResponse getUsers() {
         return GetUsersResponse.mapper(service.findAll());
     }
-
+    
+    
+    @Override
+    public User postUser(PostUserRequest request) {
+        try {
+            User user = PostUserRequest.mapper(request);
+            user.setId(UUID.randomUUID());
+            service.create(user);
+            return user;
+        } catch (IllegalArgumentException ex) {
+           throw new BadRequestException(ex);
+        }
+    }
+    
     @Override
     public GetUserResponse getUser(UUID id) {
         return service.find(id)

@@ -1,3 +1,35 @@
+
+GET http://localhost:9080/spotify-mock/api/users
+###
+
+
+GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf
+###
+
+GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf/avatar
+###
+
+
+GET http://localhost:9080/spotify-mock/api/songs
+###
+GET http://localhost:9080/spotify-mock/api/songs/008d02dd-e112-4c6f-b44d-7d4c9fc04a08
+###
+
+
+
+POST http://localhost:9080/spotify-mock/api/users
+Content-Type: application/json
+
+{
+  "name": "Krzychu"
+}
+
+###
+
+DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524
+
+###
+
 DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
 
 ###

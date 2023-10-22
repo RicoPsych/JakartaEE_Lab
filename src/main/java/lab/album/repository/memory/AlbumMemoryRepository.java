@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import lab.album.entities.Album;
@@ -11,7 +12,7 @@ import lab.album.repository.AlbumRepository;
 import lab.datastorage.DataStorage;
 
 
-@RequestScoped
+@ApplicationScoped
 public class AlbumMemoryRepository implements AlbumRepository {
 
     /**

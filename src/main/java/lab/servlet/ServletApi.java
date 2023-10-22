@@ -16,7 +16,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lab.Patterns;
-import lab.user.controler.UserController;
+import lab.song.controller.SongController;
+import lab.song.dto.GetSongResponse;
+import lab.song.entities.Song;
+import lab.user.controller.UserController;
+import lab.user.dto.PostUserRequest;
+import lab.user.dto.PutUserRequest;
+import lab.user.entities.User;
 
 @WebServlet(urlPatterns = {
         ServletApi.Paths.API + "/*"
@@ -30,12 +36,14 @@ public class ServletApi extends HttpServlet {
     }
 
     private UserController userController;
+    private SongController songController;
 
     private final Jsonb jsonb = JsonbBuilder.create();
 
     @Inject
-    public ServletApi (UserController userController){
+    public ServletApi (UserController userController,SongController songController){
         this.userController = userController;
+        this.songController = songController;
     }
 
     @Override
@@ -72,11 +80,23 @@ public class ServletApi extends HttpServlet {
                 }
                 return;
             } 
-            //else if (path.matches(Patterns.PROFESSIONS.pattern())) {
-            //     response.setContentType("application/json");
-            //     response.getWriter().write(jsonb.toJson(professionController.getProfessions()));
-            //     return;
-            // } else if (path.matches(Patterns.PROFESSION_CHARACTERS.pattern())) {
+            else if (path.matches(Patterns.SONGS.pattern())) {
+                response.setContentType("application/json");
+                response.getWriter().write(jsonb.toJson(songController.getSongs()));
+                return;
+            }
+            else if (path.matches(Patterns.SONG.pattern())) {
+                response.setContentType("application/json");
+                UUID uuid = extractUuid(Patterns.SONG, path);
+                try {
+                    GetSongResponse song = songController.getSong(uuid);
+                    response.getWriter().write(jsonb.toJson(song));
+                } catch (Exception e) {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
+                return;
+            } 
+            //else if (path.matches(Patterns.PROFESSION_CHARACTERS.pattern())) {
             //     response.setContentType("application/json");
             //     UUID uuid = extractUuid(Patterns.PROFESSION_CHARACTERS, path);
             //     response.getWriter().write(jsonb.toJson(characterController.getProfessionCharacters(uuid)));
@@ -104,19 +124,43 @@ public class ServletApi extends HttpServlet {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = parseRequestPath(request);
+        String servletPath = request.getServletPath();
+        if (Paths.API.equals(servletPath)) {
+            if (path.matches(Patterns.USERS.pattern())) {
+                User newUser = userController.postUser(jsonb.fromJson(request.getReader(), PostUserRequest.class));
+                UUID uuid = newUser.getId();
+                response.addHeader("Location", createUrl(request, Paths.API, "users", uuid.toString()));
+                return;
+            } //else 
+            // if (path.matches(Patterns.USER.pattern())) {
+            //     userController.postUser(request.getPart("portrait").getInputStream());
+            //     return;
+            // }
+        }
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = parseRequestPath(request);
         String servletPath = request.getServletPath();
         if (Paths.API.equals(servletPath)) {
-            // if (path.matches(Patterns.CHARACTER.pattern())) {
-            //     UUID uuid = extractUuid(Patterns.CHARACTER, path);
-            //     characterController.putCharacter(uuid, jsonb.fromJson(request.getReader(), PutCharacterRequest.class));
-            //     response.addHeader("Location", createUrl(request, Paths.API, "characters", uuid.toString()));
-            //     return;
-            //} else 
+            if (path.matches(Patterns.USER.pattern())) {
+                UUID uuid = extractUuid(Patterns.USER, path);
+                userController.putUser(uuid, jsonb.fromJson(request.getReader(), PutUserRequest.class));
+                response.addHeader("Location", createUrl(request, Paths.API, "users", uuid.toString()));
+                return;
+            } else 
             if (path.matches(Patterns.USER_AVATAR.pattern())) {
                 UUID uuid = extractUuid(Patterns.USER_AVATAR, path);
-                userController.putUserAvatar(uuid, request.getPart("portrait").getInputStream());
+                try {
+                    userController.putUserAvatar(uuid, request.getPart("portrait").getInputStream());
+                }
+                catch(Exception e){
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
                 return;
             }
         }
@@ -131,7 +175,17 @@ public class ServletApi extends HttpServlet {
         if (Paths.API.equals(servletPath)) {
             if (path.matches(Patterns.USER_AVATAR.pattern())) {
                 UUID uuid = extractUuid(Patterns.USER_AVATAR, path);
+                try {
                 userController.deleteUserAvatar(uuid);
+                }
+                catch (Exception e){
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);   
+                }
+                return;
+            }
+            else if (path.matches(Patterns.USER.pattern())) {
+                UUID uuid = extractUuid(Patterns.USER, path);
+                userController.deleteUser(uuid);
                 return;
             }
         }

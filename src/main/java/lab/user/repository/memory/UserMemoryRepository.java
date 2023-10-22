@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import lab.datastorage.DataStorage;
 import lab.user.entities.User;
 import lab.user.repository.UserRepository;
 
-@RequestScoped
+@ApplicationScoped
 public class UserMemoryRepository implements UserRepository {
     private final DataStorage store;
 

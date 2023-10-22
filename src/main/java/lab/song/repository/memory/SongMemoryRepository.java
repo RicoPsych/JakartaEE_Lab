@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import lab.datastorage.DataStorage;
 import lab.song.entities.Song;
 import lab.song.repository.SongRepository;
 
-@RequestScoped
+@ApplicationScoped
 public class SongMemoryRepository implements SongRepository {
 
     /**
@@ -26,7 +27,7 @@ public class SongMemoryRepository implements SongRepository {
     @Override
     public Optional<Song> find(UUID id) {
         
-        return store.getSongs().stream().filter(user -> user.getId().equals(id))
+        return store.getSongs().stream().filter(entity -> entity.getId().equals(id))
         .findFirst();
     }
 
