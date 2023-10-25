@@ -49,7 +49,7 @@ public class SongView implements Serializable {
         if (song.isPresent()) {
             this.song = SongModel.mapper(song.get());
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Character not found");
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Song not found");
         }
     }
 

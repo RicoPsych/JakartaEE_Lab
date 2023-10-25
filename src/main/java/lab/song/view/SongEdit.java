@@ -70,7 +70,7 @@ public class SongEdit implements Serializable {
                 .collect(Collectors.toList());
 
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Character not found");
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Song not found");
         }
     }
 

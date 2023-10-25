@@ -1,6 +1,7 @@
 package lab.song.model;
 
 import lab.song.entities.Song;
+import lab.song.model.converter._AlbumModel;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +22,7 @@ public class SongModel {
     private String name;
     private float rating;
     private int duration;
-    private String album;
+    private _AlbumModel album;
 //    private Artist author;
    private String owner;
 
@@ -30,7 +31,7 @@ public class SongModel {
             .name(song.getName())
             .duration(song.getDuration())
             .rating(song.getRating())
-            .album(song.getAlbum().getName())
+            .album(_AlbumModel.mapper(song.getAlbum()))
   //          .owner(song.getOwner().getName())
             .build();
     }

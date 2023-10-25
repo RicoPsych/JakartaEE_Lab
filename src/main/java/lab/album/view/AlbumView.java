@@ -55,7 +55,7 @@ public class AlbumView implements Serializable {
         if (album.isPresent()) {
             this.album = AlbumModel.mapper(album.get(),songService.findByAlbum(album.get().getId()).get());
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Character not found");
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Album not found");
         }
     }
 

@@ -38,8 +38,13 @@
                                 Album: 
                             </div>  
                             <div class="col-6">
-                                <h:outputText value="#{songView.song.album}"/>
-                            </div>
+                                <h:link outcome="/album/album_view.xhtml" value="#{songView.song.album.name}">
+                                <f:param name="id" value="#{songView.song.album.id}"/>
+                            </h:link>
+                            </div>  
+                            <!-- <div class="col-6">
+                                <h:outputText value="#{songView.song.album.name}"/>
+                            </div> -->
                         </div>
                         <!-- <div class="row mb-2">
                             <div class="col-6">

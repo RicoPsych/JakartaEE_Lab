@@ -1,32 +1,25 @@
 package lab.album.view;
 
+import java.io.Serializable;
+
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lab.album.model.AlbumsModel;
 import lab.album.service.AlbumService;
 import lab.song.service.SongService;
 
-/**
- * View bean for rendering list of characters.
- */
-@RequestScoped
+@ViewScoped
 @Named
-public class AlbumList {
+public class AlbumList implements Serializable {
 
-    /**
-     * Service for managing characters.
-     */
+
     private final AlbumService service;
     private final SongService songService;
-    /**
-     * Characters list exposed to the view.
-     */
+    
     private AlbumsModel albums;
-
-    /**
-     * Factory producing functions for conversion between models and entities.
-     */
 
     /**
      * @param service character service

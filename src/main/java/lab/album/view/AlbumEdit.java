@@ -21,9 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * View bean for rendering single character edit form.
- */
+
 @ViewScoped
 @Named
 public class AlbumEdit implements Serializable {
@@ -31,16 +29,11 @@ public class AlbumEdit implements Serializable {
     private final AlbumService service;
     private final SongService songService;
 
-    /**
-     * Character id.
-     */
+
     @Setter
     @Getter
     private UUID id;
 
-    /**
-     * Character exposed to the view.
-     */
     @Getter
     private AlbumEditModel album;
 
@@ -66,7 +59,7 @@ public class AlbumEdit implements Serializable {
         if (album.isPresent()) {
             this.album = AlbumEditModel.mapper(album.get());
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Character not found");
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Album not found");
         }
     }
 
