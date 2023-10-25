@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lab.album.repository.AlbumRepository;
 import lab.song.entities.Song;
 import lab.song.repository.SongRepository;
 import lab.user.entities.User;
@@ -16,10 +17,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(force = true)
 public class SongService {
     private final SongRepository songRepository;
+    private final AlbumRepository albumRepository;
 
     @Inject
-    public SongService(SongRepository songRepository){
+    public SongService(SongRepository songRepository,  AlbumRepository albumRepository){
         this.songRepository = songRepository;
+        this.albumRepository = albumRepository;
+    }
+
+    public Optional<List<Song>> findByAlbum(UUID id){
+        return albumRepository.find(id).map(songRepository::findByAlbum);
     }
 
     public Optional<Song> find(UUID id) {

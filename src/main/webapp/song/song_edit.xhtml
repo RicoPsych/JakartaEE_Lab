@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{songEdit.id}" required="true"/>
+        <f:viewAction action="#{songEdit.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <article>
+            <header><h2>Edit album info</h2></header>
+            <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
+            
+            <div class="row">
+                <div class="col-4 p-2">
+                    <div class="form-outline">
+                        <h:inputText id="name" value="#{songEdit.song.name}" styleClass="form-control"/>
+                        <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4 p-2">
+                    <div class="form-outline">
+                        <h:inputText id="duration" value="#{songEdit.song.duration}" styleClass="form-control"/>
+                        <h:outputLabel for="duration" value="Duration:" styleClass="form-label"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4 p-2">
+                    <div class="form-outline">
+                        <h:inputText id="rating" value="#{songEdit.song.rating}" styleClass="form-control"/>
+                        <h:outputLabel for="rating" value="Rating:" styleClass="form-label"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4 p-2">
+                    <div class="form-outline">
+                        <h:selectOneMenu value = "#{songEdit.song.album}" styleClass="form-control active"> 
+                            <f:selectItems value="#{songEdit.albums}" var="album" itemLabel="#{album.name}"/>
+                        </h:selectOneMenu>  
+                        <h:outputLabel for="genre" value="Genre:" styleClass="form-label"/>
+                    </div>
+                </div>
+            </div>
+
+                <div class="row">
+                    <div class="col-2 p-2 text-center">
+                        <h:commandButton styleClass="btn btn-primary" value="Update"
+                                         action="#{songEdit.saveAction()}"/>
+                    </div>
+                    <div class="col-2 p-2 text-center">
+                        <h:commandButton styleClass="btn btn-secondary" type="reset" value="Reset"/>
+                    </div>
+                </div>
+            </h:form>
+        </article>
+    </ui:define>
+
+</ui:composition>

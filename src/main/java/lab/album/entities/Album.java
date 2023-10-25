@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
 import lab.song.entities.Song;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +31,9 @@ public class Album implements Serializable{
     private List<Song> songs;
     private LocalDate releaseDate;
     private Genre genre;
-
+    
+@ViewScoped
+@Named
     public enum Genre {
     Rock,
     Pop,
