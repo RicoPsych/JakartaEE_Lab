@@ -6,8 +6,8 @@ import java.util.UUID;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import lab.exception.BadRequestException;
-import lab.exception.NotFoundException;
+// import lab.exception.BadRequestException;
+// import lab.exception.NotFoundException;
 import lab.user.dto.GetUserResponse;
 import lab.user.dto.GetUsersResponse;
 import lab.user.dto.PatchUserRequest;
@@ -41,15 +41,16 @@ public class SimpleUserController implements UserController {
             service.create(user);
             return user;
         } catch (IllegalArgumentException ex) {
-           throw new BadRequestException(ex);
+      //     throw new BadRequestException(ex);
+            return null;
         }
     }
     
     @Override
     public GetUserResponse getUser(UUID id) {
         return service.find(id)
-                .map(user -> GetUserResponse.mapper(user))
-                .orElseThrow(NotFoundException::new);
+                .map(user -> GetUserResponse.mapper(user)).get();
+//                .orElseThrow(Exception::new);//NotFoundException
     }
 
     @Override
@@ -60,7 +61,7 @@ public class SimpleUserController implements UserController {
             
             service.create(user);
         } catch (IllegalArgumentException ex) {
-           throw new BadRequestException(ex);
+        //    throw new BadRequestException(ex);
         }
     }
 
@@ -86,8 +87,8 @@ public class SimpleUserController implements UserController {
 
     @Override
     public byte[] getUserAvatar(UUID id) {
-        return service.getAvatar(id)
-            .orElseThrow(NotFoundException::new);
+        return service.getAvatar(id).get();
+            // .orElseThrow(Exception::new);//NotFoundException
     }
 
     @Override
@@ -95,7 +96,7 @@ public class SimpleUserController implements UserController {
         service.find(id).ifPresentOrElse(
             entity -> service.updateAvatar(id, avatar),
             () -> {
-                throw new NotFoundException();
+            // throw new NotFoundException();
             }
         );
     }
@@ -104,7 +105,7 @@ public class SimpleUserController implements UserController {
        service.find(id).ifPresentOrElse(
             entity -> service.updateAvatar(id, avatar),
             () -> {
-                throw new NotFoundException();
+            //throw new NotFoundException();
             }
         );
     }
@@ -115,7 +116,7 @@ public class SimpleUserController implements UserController {
         
             entity -> service.deleteAvatar(id),
             () -> {
-                throw new NotFoundException();
+                //throw new NotFoundException();
             }
         );
     }

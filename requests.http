@@ -1,46 +1,54 @@
 
-GET http://localhost:9080/spotify-mock/api/users
+GET http://localhost:9080/spotify-mock/api/albums
+
+###
+ 
+GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792
 ###
 
+DELETE http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792
 
-GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf
 ###
 
-GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf/avatar
-###
-
-
-GET http://localhost:9080/spotify-mock/api/songs
-###
-GET http://localhost:9080/spotify-mock/api/songs/008d02dd-e112-4c6f-b44d-7d4c9fc04a08
-###
-
-
-
-POST http://localhost:9080/spotify-mock/api/users
+PUT http://localhost:9080/spotify-mock/api/albums/33d1dc17-b337-4bdc-812b-0417918c1524/
 Content-Type: application/json
 
 {
-  "name": "Krzychu"
+  "genre": "Indie",
+  "name": "Sand",
+  "releaseDate": "2021-11-10"
+}
+###
+
+ 
+GET http://localhost:9080/spotify-mock/api/songs
+###
+
+
+
+GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792/songs
+###
+
+GET http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356
+
+###
+
+
+GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792/songs/68f62a60-710a-4521-997c-56c842d39339
+
+###
+
+PUT http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
+Content-Type: application/json
+
+{
+  "duration": 300,
+  "name": "Any Suggestion",
+  "rating": 4.3
 }
 
 ###
 
-DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524
-
-###
-
-DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
-
-###
-
-PUT http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
-Content-Type: multipart/form-data; boundary=boundary
-
---boundary
-Content-Disposition: form-data; name="portrait"; filename="sigrid.png'
-
-< src/main/resources/lab/configuration/avatar/sigrid.png
---boundary--
+DELETE http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
 
 ###

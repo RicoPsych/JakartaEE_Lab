@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import lab.album.entities.Album;
 import lab.album.repository.AlbumRepository;

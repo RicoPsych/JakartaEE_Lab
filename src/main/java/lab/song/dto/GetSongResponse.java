@@ -55,7 +55,7 @@ public class GetSongResponse {
         private UUID id;
     }
     
-    private _User owner;
+    //private _User owner;
 
     public static GetSongResponse mapper(Song song) {
 
@@ -68,10 +68,10 @@ public class GetSongResponse {
                 .id(song.getAlbum().getId())
                 .name(song.getAlbum().getName())
                 .build())
-            .owner(_User.builder()
-                .id(song.getOwner().getId())
-                .name(song.getOwner().getName())
-                .build())
+            // .owner(_User.builder()
+            //     .id(song.getOwner().getId())
+            //     .name(song.getOwner().getName())
+            //     .build())
             .build();
     }
     
