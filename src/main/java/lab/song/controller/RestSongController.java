@@ -81,6 +81,27 @@ public class RestSongController implements SongController {
         }
     }
 
+    @Override
+    public void postSong(UUID album_id, PutSongRequest request) {
+        
+        try {
+            Song song = PutSongRequest.mapper(request,
+            albumService.find(album_id).orElseThrow(NotFoundException::new),
+            UUID.randomUUID());
+            service.create(song);
+
+            response.setHeader("Location", uriInfo.getBaseUriBuilder()
+            .path(SongController.class, "getSong")
+            .build(album_id,song.getId())
+            .toString());
+            throw new WebApplicationException(Response.Status.CREATED);
+
+        } catch (IllegalArgumentException ex) {
+           throw new BadRequestException(ex);
+        }
+    }
+
+
     // @Override
     // public void patchSong(UUID id, PatchSongRequest request) {
     // //     service.find(id).ifPresentOrElse(

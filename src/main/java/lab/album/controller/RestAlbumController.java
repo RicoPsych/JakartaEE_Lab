@@ -105,24 +105,20 @@ public class RestAlbumController implements AlbumController {
 
 
 
-
-    // @Override
-    // public void deleteAlbum(UUID id) {
-    //     service.find(id).ifPresentOrElse(
-    //         entity -> service.delete(id),
-    //         () -> {
-    //             throw new NotFoundException();
-    //         }
-    //     );
-    // }
-
-
     @Override
-    public Album postAlbum(PostAlbumRequest request) {
-            // Album album = PostAlbumRequest.mapper(request);
-            // album.setId(id);
-            // service.create(album);
-            return null;
+    public Album postAlbum(PutAlbumRequest request) {
+        try {
+            Album album = PutAlbumRequest.mapper(request,UUID.randomUUID());
+            service.create(album);
+
+            response.setHeader("Location", uriInfo.getBaseUriBuilder()
+            .path(AlbumController.class, "getAlbum")
+            .build(album.getId())
+            .toString());
+            throw new WebApplicationException(Response.Status.CREATED);
+        } catch (IllegalArgumentException ex) {
+            throw new BadRequestException(ex);
+        }
     }
 
 }

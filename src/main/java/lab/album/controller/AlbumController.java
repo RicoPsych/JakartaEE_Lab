@@ -33,7 +33,7 @@ public interface AlbumController {
     @POST
     @Path("/albums")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Album postAlbum(PostAlbumRequest request);
+    public Album postAlbum(PutAlbumRequest request);
 
     @PUT
     @Path("/albums/{id}")

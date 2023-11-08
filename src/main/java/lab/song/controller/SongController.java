@@ -6,6 +6,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -33,6 +34,12 @@ public interface SongController {
     @Produces(MediaType.APPLICATION_JSON)
     public GetSongResponse getSong(@PathParam("album_id") UUID album_id, @PathParam("id") UUID id);
 
+
+    @POST
+    @Path("/albums/{album_id}/songs/")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void postSong(@PathParam("album_id") UUID album_id,PutSongRequest request);
+
     @PUT
     @Path("/albums/{album_id}/songs/{id}")
     @Consumes({MediaType.APPLICATION_JSON})
@@ -42,4 +49,5 @@ public interface SongController {
     @DELETE
     @Path("/albums/{album_id}/songs/{id}")
     public void deleteSong(@PathParam("album_id") UUID album_id, @PathParam("id") UUID id);
+
 }

@@ -20,6 +20,16 @@ Content-Type: application/json
 }
 ###
 
+POST http://localhost:9080/spotify-mock/api/albums/
+Content-Type: application/json
+
+{
+  "genre": "Indie",
+  "name": "Sand",
+  "releaseDate": "2021-11-10"
+}
+###
+
  
 GET http://localhost:9080/spotify-mock/api/songs
 ###
@@ -29,7 +39,7 @@ GET http://localhost:9080/spotify-mock/api/songs
 GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792/songs
 ###
 
-GET http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356
+GET http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/008d02dd-e112-4c6f-b44d-7d4c9fc04a08
 
 ###
 
@@ -39,6 +49,16 @@ GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b
 ###
 
 PUT http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
+Content-Type: application/json
+
+{
+  "duration": 300,
+  "name": "Any Suggestion",
+  "rating": 4.3
+}
+###
+
+POST http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802353/songs/
 Content-Type: application/json
 
 {
