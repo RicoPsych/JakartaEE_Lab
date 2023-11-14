@@ -68,8 +68,12 @@ public class RestSongController implements SongController {
             Song song = PutSongRequest.mapper(request,
             albumService.find(album_id).orElseThrow(NotFoundException::new),
             id);
-            service.create(song);
-
+            if(service.find(song.getId()).isPresent()){
+                service.update(song);
+            }
+            else{
+                service.create(song);
+            }
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
             .path(SongController.class, "getSong")
             .build(album_id,id)

@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import lab.datastorage.DataStorage;
 import lab.user.entities.User;
 import lab.user.repository.UserRepository;
 

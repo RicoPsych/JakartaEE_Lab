@@ -64,8 +64,13 @@ public class RestAlbumController implements AlbumController {
     public void putAlbum(UUID id, PutAlbumRequest request) {
         try {
             Album album = PutAlbumRequest.mapper(request,id);
-            album.setId(id);
-            service.create(album);
+            //album.setId(id);
+            if (service.find(album.getId()).isPresent()){
+                service.update(album);    
+            }
+            else {
+                service.create(album);
+            }
 
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
             .path(AlbumController.class, "getAlbum")
@@ -92,9 +97,9 @@ public class RestAlbumController implements AlbumController {
     public void deleteAlbum(UUID id) {
         service.find(id).ifPresentOrElse(
             entity -> {
-                List<Song> list = songService.findByAlbum(id).get();
-                if(!list.isEmpty())
-                    list.stream().forEach(song->songService.delete(song.getId()));
+                // List<Song> list = songService.findByAlbum(id).get();
+                // if(!list.isEmpty())
+                //     list.stream().forEach(song->songService.delete(song.getId()));
                 service.delete(id);
             },
             () -> {

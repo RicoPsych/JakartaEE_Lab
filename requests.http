@@ -1,6 +1,6 @@
 
 GET http://localhost:9080/spotify-mock/api/albums
-
+ 
 ###
  
 GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792
@@ -54,11 +54,11 @@ Content-Type: application/json
 {
   "duration": 300,
   "name": "Any Suggestion",
-  "rating": 4.3
+  "rating": 4.5
 }
 ###
 
-POST http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802353/songs/
+POST http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/
 Content-Type: application/json
 
 {
