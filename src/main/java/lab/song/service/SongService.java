@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lab.album.repository.AlbumRepository;
 import lab.song.entities.Song;
 import lab.song.repository.SongRepository;
@@ -35,12 +36,15 @@ public class SongService {
     public List<Song> findAll() {
         return songRepository.findAll();
     }
+    @Transactional
     public void create(Song song) {
         songRepository.create(song);
     }
+    @Transactional
     public void update(Song song) {
         songRepository.update(song);
     }
+    @Transactional
     public void delete(UUID id) {
         songRepository.delete(songRepository.find(id).orElseThrow());
     }

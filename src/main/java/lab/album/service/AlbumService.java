@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lab.album.entities.Album;
 import lab.album.repository.AlbumRepository;
 import lombok.NoArgsConstructor;
@@ -26,12 +27,15 @@ public class AlbumService {
     public List<Album> findAll() {
         return albumRepository.findAll();
     }
+    @Transactional
     public void create(Album album) {
         albumRepository.create(album);
     }
+    @Transactional
     public void update(Album album) {
         albumRepository.update(album);
     }
+    @Transactional
     public void delete(UUID id) {
         albumRepository.delete(albumRepository.find(id).orElseThrow());
     }

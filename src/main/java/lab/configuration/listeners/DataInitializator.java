@@ -52,6 +52,7 @@ public class DataInitializator {
     private void init() {
         requestContextController.activate();
 
+        if(albumService.findAll().isEmpty()){
 //        artistService.create(Artist.builder().id(UUID.fromString("f98e668-364c-4766-a87d-a3a909800ebf")).name("Balthazar").retired(false).build());
 
         Album a1 = Album.builder().id(UUID.fromString("8d2e3678-1678-4550-8aeb-1b9223802356"))
@@ -154,10 +155,13 @@ public class DataInitializator {
         songService.create(s3);
         songService.create(s4);
 
-        userService.updateAvatar(UUID.fromString("33d1dc17-b337-4bdc-812b-0417918c1524"), getResourceAsByteArray("../avatar/calvian.png"));
-        userService.updateAvatar(UUID.fromString("77900169-116c-4800-a222-af01556a7f0d"), getResourceAsByteArray("../avatar/eloise.png"));
-        userService.updateAvatar(UUID.fromString("8213240b-0943-4719-acb2-5a41d1ec3c1e"), getResourceAsByteArray("../avatar/uhlbrecht.png"));
-        userService.updateAvatar(UUID.fromString("f901e668-364c-4f66-ad9d-a3a905f80ebf"), getResourceAsByteArray("../avatar/zereni.png"));
+        // userService.updateAvatar(UUID.fromString("33d1dc17-b337-4bdc-812b-0417918c1524"), getResourceAsByteArray("../avatar/calvian.png"));
+        // userService.updateAvatar(UUID.fromString("77900169-116c-4800-a222-af01556a7f0d"), getResourceAsByteArray("../avatar/eloise.png"));
+        // userService.updateAvatar(UUID.fromString("8213240b-0943-4719-acb2-5a41d1ec3c1e"), getResourceAsByteArray("../avatar/uhlbrecht.png"));
+        // userService.updateAvatar(UUID.fromString("f901e668-364c-4f66-ad9d-a3a905f80ebf"), getResourceAsByteArray("../avatar/zereni.png"));
+        }
+        
+        requestContextController.deactivate();
     }
 
     @SneakyThrows

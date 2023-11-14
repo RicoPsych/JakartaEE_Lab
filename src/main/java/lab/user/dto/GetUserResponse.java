@@ -50,7 +50,7 @@ public class GetUserResponse {
     return GetUserResponse.builder()
         .id(user.getId())
         .name(user.getName())
-        .favourites(user.getFavourites().stream()
+        .favourites(user.getSongs().stream()
             .map(song->_Song.builder()
                 .id(song.getId())
                 .name(song.getName())

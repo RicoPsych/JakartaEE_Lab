@@ -8,6 +8,11 @@ import java.util.UUID;
 
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lab.song.entities.Song;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +30,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
+@Table(name = "albums")
 public class Album implements Serializable{
+
+    @Id
     private UUID id;
     private String name;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "album", cascade = CascadeType.REMOVE)
     private List<Song> songs;
     private LocalDate releaseDate;
     private Genre genre;

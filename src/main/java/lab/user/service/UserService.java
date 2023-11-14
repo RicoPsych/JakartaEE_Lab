@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import lab.filesystemaccess.FileSystemAccess;
 import lab.song.entities.Song;
 import lab.song.repository.SongRepository;
@@ -41,12 +42,15 @@ public class UserService {
     public List<User> findAll() {
         return userRepository.findAll();
     }
+    @Transactional
     public void create(User user) {
         userRepository.create(user);
     }
+    @Transactional
     public void update(User user) {
         userRepository.update(user);
     }
+    @Transactional
     public void delete(UUID id) {
         fileSystem.deleteAvatar(id);
         userRepository.delete(userRepository.find(id).orElseThrow());
@@ -54,7 +58,9 @@ public class UserService {
 
     public Optional<byte[]> getAvatar(UUID id){
         return fileSystem.getAvatar(id);
-    } 
+    }
+
+    @Transactional 
     public void updateAvatar(UUID id, InputStream is) {
         userRepository.find(id).ifPresent(user -> {
             //try {
@@ -66,7 +72,7 @@ public class UserService {
            // }
         });
     }
-
+    @Transactional
     public void updateAvatar(UUID id, byte[] is) {
         userRepository.find(id).ifPresent(user -> {
             //try {
@@ -79,6 +85,7 @@ public class UserService {
         });
     }
 
+@Transactional
   public void deleteAvatar(UUID id) {
         userRepository.find(id).ifPresent(user -> {
             // try {
