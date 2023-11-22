@@ -9,7 +9,9 @@ import java.util.UUID;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -40,6 +42,7 @@ public class Album implements Serializable{
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    //@ElementCollection(fetch = FetchType.LAZY)
     @OneToMany(mappedBy = "album", cascade = CascadeType.REMOVE)
     private List<Song> songs;
     private LocalDate releaseDate;
