@@ -30,9 +30,17 @@ public interface SongController {
     public GetSongsResponse getAlbumSongs(@PathParam("album_id") UUID id); 
 
     @GET
+    @Path("/users/{user_id}/songs")
+    @Produces(MediaType.APPLICATION_JSON)
+    public GetSongsResponse getUserSongs(@PathParam("user_id") UUID user_id);
+
+
+    @GET
     @Path("/albums/{album_id}/songs/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public GetSongResponse getSong(@PathParam("album_id") UUID album_id, @PathParam("id") UUID id);
+
+
 
 
     @POST

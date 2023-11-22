@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -11,7 +12,7 @@ import lab.album.entities.Album;
 import lab.album.repository.AlbumRepository;
 
 
-@RequestScoped
+@Dependent
 public class AlbumPersistenceRepository implements AlbumRepository {
 
     /**

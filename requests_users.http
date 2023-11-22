@@ -1,8 +1,16 @@
-
-GET http://localhost:9080/spotify-mock/api/users
 ###
+GET http://localhost:9080/spotify-mock/api/users
+Authorization: Basic U3RlZmFuOmFkbWlu
 
+###
+GET http://localhost:9080/spotify-mock/api/users
+Authorization: Basic UGF3ZWw6dXNlcg==
 
+###
+GET http://localhost:9080/spotify-mock/api/songs
+Authorization: Basic UGF3ZWw6dXNlcg==
+
+###
 GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf
 ###
 
@@ -21,7 +29,8 @@ POST http://localhost:9080/spotify-mock/api/users
 Content-Type: application/json
 
 {
-  "name": "Krzychu"
+  "name": "Krzychu",
+  "password": "user"
 }
 
 ###
@@ -38,9 +47,13 @@ PUT http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="portrait"; filename="sigrid.png'
+Content-Disposition: form-data; name="avatar"; filename="sigrid.png'
 
 < src/main/resources/lab/configuration/avatar/sigrid.png
 --boundary--
 
+###
+
+
+GET http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
 ###

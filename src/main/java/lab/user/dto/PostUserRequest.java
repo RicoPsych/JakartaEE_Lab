@@ -18,10 +18,10 @@ import lombok.ToString;
 @Setter
 public class PostUserRequest {
     private String name;
-    
+    private String password;
     //private List<Song> favourites;
 
     public static User mapper(PostUserRequest request){
-        return User.builder().name(request.getName()).build();
+        return User.builder().name(request.getName()).password(request.getPassword()).build();
     }
 }

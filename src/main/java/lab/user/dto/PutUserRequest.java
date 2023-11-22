@@ -18,9 +18,10 @@ import lombok.ToString;
 public class PutUserRequest {
     private String name;
     
+    private String password;
     //private List<Song> favourites;
 
     public static User mapper(PutUserRequest request){
-        return User.builder().name(request.getName()).build();
+        return User.builder().name(request.getName()).password(request.getPassword()).build();
     }
 }

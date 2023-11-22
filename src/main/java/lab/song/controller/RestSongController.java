@@ -1,7 +1,11 @@
 package lab.song.controller;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
@@ -17,21 +21,35 @@ import lab.song.dto.GetSongsResponse;
 import lab.song.dto.PutSongRequest;
 import lab.song.entities.Song;
 import lab.song.service.SongService;
+import lab.user.entities.UserRoles;
+import lombok.extern.java.Log;
 
 @Path("")
+@Log
+@RolesAllowed(UserRoles.USER)
 public class RestSongController implements SongController {
 
-    private final SongService service;
-    private final AlbumService albumService;
+    private  SongService songService;
+    private  AlbumService albumService;
     private final UriInfo uriInfo;
     private HttpServletResponse response;
 
     @Inject
-    public RestSongController(SongService service, AlbumService albumService,
+    public RestSongController(
+        //SongService service, AlbumService albumService,
         @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.service = service;
-        this.albumService = albumService;
+        //this.service = service;
+        //this.albumService = albumService;
         this.uriInfo = uriInfo;
+    }
+
+    @EJB
+    public void setAlbumService(AlbumService albumService){
+        this.albumService = albumService;
+    }
+    @EJB
+    public void setSongService(SongService songService){
+        this.songService = songService;
     }
 
     @Context
@@ -43,20 +61,26 @@ public class RestSongController implements SongController {
 
     @Override
     public GetSongsResponse getSongs() {
-        return GetSongsResponse.mapper(service.findAll());
+        return GetSongsResponse.mapper(songService.findAllForCallerPrincipal());
     }
 
     @Override
     public GetSongsResponse getAlbumSongs(UUID album_id) {
         albumService.find(album_id).orElseThrow(NotFoundException::new);
-        return GetSongsResponse.mapper(service.findByAlbum(album_id).get());
+        return GetSongsResponse.mapper(songService.findByAlbumForCallerPrincipal(album_id).get());
     }
+    @Override
+    public GetSongsResponse getUserSongs(UUID user_id) {
+       // userService.find(user_id).orElseThrow(NotFoundException::new);
+        return GetSongsResponse.mapper(songService.findAllByUser(user_id).get());
+    }
+
 
     @Override
     public GetSongResponse getSong(UUID album_id, UUID id) {
         albumService.find(album_id).orElseThrow(NotFoundException::new);
 
-        return service.find(id)
+        return songService.find(id)
                 .map(song -> GetSongResponse.mapper(song))
                 .orElseThrow(NotFoundException::new);
     }
@@ -68,11 +92,11 @@ public class RestSongController implements SongController {
             Song song = PutSongRequest.mapper(request,
             albumService.find(album_id).orElseThrow(NotFoundException::new),
             id);
-            if(service.find(song.getId()).isPresent()){
-                service.update(song);
+            if(songService.find(song.getId()).isPresent()){
+                songService.update(song);
             }
             else{
-                service.create(song);
+                songService.create(song);
             }
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
             .path(SongController.class, "getSong")
@@ -80,8 +104,13 @@ public class RestSongController implements SongController {
             .toString());
             throw new WebApplicationException(Response.Status.CREATED);
 
-        } catch (IllegalArgumentException ex) {
-           throw new BadRequestException(ex);
+        } catch (EJBException ex) {
+            //Any unchecked exception is packed into EJBException. Business exception can be itroduced here.
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 
@@ -92,7 +121,7 @@ public class RestSongController implements SongController {
             Song song = PutSongRequest.mapper(request,
             albumService.find(album_id).orElseThrow(NotFoundException::new),
             UUID.randomUUID());
-            service.create(song);
+            songService.create(song);
 
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
             .path(SongController.class, "getSong")
@@ -100,8 +129,13 @@ public class RestSongController implements SongController {
             .toString());
             throw new WebApplicationException(Response.Status.CREATED);
 
-        } catch (IllegalArgumentException ex) {
-           throw new BadRequestException(ex);
+        } catch (EJBException ex) {
+            //Any unchecked exception is packed into EJBException. Business exception can be itroduced here.
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 
@@ -119,8 +153,8 @@ public class RestSongController implements SongController {
     @Override
     public void deleteSong(UUID album_id, UUID id) {
         albumService.find(album_id).orElseThrow(NotFoundException::new);
-        service.find(id).ifPresentOrElse(
-            entity -> service.delete(id),
+        songService.find(id).ifPresentOrElse(
+            entity -> songService.delete(id),
             () -> {
                 throw new NotFoundException();
             }

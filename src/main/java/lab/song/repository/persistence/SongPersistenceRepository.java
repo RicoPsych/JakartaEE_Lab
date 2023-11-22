@@ -3,15 +3,18 @@ package lab.song.repository.persistence;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import lab.album.entities.Album;
 import lab.song.entities.Song;
 import lab.song.repository.SongRepository;
 import lab.user.entities.User;
 
-@RequestScoped
+@Dependent
 public class SongPersistenceRepository implements SongRepository {
 
     /**
@@ -46,14 +49,34 @@ public class SongPersistenceRepository implements SongRepository {
 
     @Override  
     public List<Song> findByUser(User user) {
-
-        return em.createQuery("select c from Song c where c.user = :user", Song.class)
-                .setParameter("user", user)
+        return em.createQuery("select c from Song c where c.owner = :owner", Song.class)
+                .setParameter("owner", user)
                 .getResultList();
         // return store.getSongs().stream().filter(entity -> user.equals(entity.getOwner()))
         // .collect(Collectors.toList());
     }
 
+  @Override  
+    public List<Song> findByAlbumAndUser(Album album,User user) {
+        return em.createQuery("select c from Song c where c.owner = :owner and c.album = :album", Song.class)
+                .setParameter("owner", user)
+                .setParameter("album", album)
+                .getResultList();
+        // return store.getSongs().stream().filter(entity -> user.equals(entity.getOwner()))
+        // .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Song> findByIdAndUser(UUID id, User user) {
+        try {
+            return Optional.of(em.createQuery("select c from Song c where c.id = :id and c.owner = :owner", Song.class)
+                    .setParameter("owner", user)
+                    .setParameter("id", id)
+                    .getSingleResult());
+        } catch (NoResultException ex) {
+            return Optional.empty();
+        }
+    }
 
     @Override
     public List<Song> findAll() {

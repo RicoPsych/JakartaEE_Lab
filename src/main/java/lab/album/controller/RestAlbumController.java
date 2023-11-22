@@ -2,7 +2,11 @@ package lab.album.controller;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.EJB;
+import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.ws.rs.BadRequestException;
@@ -21,23 +25,36 @@ import lab.album.entities.Album;
 import lab.album.service.AlbumService;
 import lab.song.entities.Song;
 import lab.song.service.SongService;
+import lab.user.entities.UserRoles;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 @Path("")
+@Log
 public class RestAlbumController implements AlbumController {
 
-    private final AlbumService service;
-    private final SongService songService;
+    private AlbumService service;
+    private SongService songService;
     private final UriInfo uriInfo;
     private HttpServletResponse response;
 
     @Inject
-    public RestAlbumController(AlbumService service, SongService songService,
+    public RestAlbumController( //AlbumService service, SongService songService,
     @SuppressWarnings("CdiInjectionPointsInspection") UriInfo uriInfo) {
-        this.service = service;
+        //this.service = service;
         this.uriInfo = uriInfo;
+        //this.songService = songService;
+    }
+
+    @EJB
+    public void setAlbumService(AlbumService albumService){
+        this.service = albumService;
+    }
+    @EJB
+    public void setSongService(SongService songService){
         this.songService = songService;
     }
+
 
     @Context
     public void setResponse(HttpServletResponse response) {
@@ -55,7 +72,7 @@ public class RestAlbumController implements AlbumController {
     @Override
     public GetAlbumResponse getAlbum(UUID id) {
         return service.find(id)
-                .map(album -> GetAlbumResponse.mapper(album,songService.findByAlbum(id).get()))
+                .map(album -> GetAlbumResponse.mapper(album,songService.findByAlbumForCallerPrincipal(id).get()))
                 .orElseThrow(NotFoundException::new);
     }
 
@@ -77,8 +94,13 @@ public class RestAlbumController implements AlbumController {
             .build(id)
             .toString());
             throw new WebApplicationException(Response.Status.CREATED);
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+        } catch (EJBException ex) {
+            //Any unchecked exception is packed into EJBException. Business exception can be itroduced here.
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 
@@ -92,7 +114,7 @@ public class RestAlbumController implements AlbumController {
     // // );
     // }
 
-
+    @RolesAllowed(UserRoles.ADMIN)
     @Override
     public void deleteAlbum(UUID id) {
         service.find(id).ifPresentOrElse(
@@ -121,8 +143,13 @@ public class RestAlbumController implements AlbumController {
             .build(album.getId())
             .toString());
             throw new WebApplicationException(Response.Status.CREATED);
-        } catch (IllegalArgumentException ex) {
-            throw new BadRequestException(ex);
+        } catch (EJBException ex) {
+            //Any unchecked exception is packed into EJBException. Business exception can be itroduced here.
+            if (ex.getCause() instanceof IllegalArgumentException) {
+                log.log(Level.WARNING, ex.getMessage(), ex);
+                throw new BadRequestException(ex);
+            }
+            throw ex;
         }
     }
 

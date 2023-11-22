@@ -1,66 +1,84 @@
 package lab.user.service;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
+import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import lab.filesystemaccess.FileSystemAccess;
-import lab.song.entities.Song;
-import lab.song.repository.SongRepository;
 import lab.user.entities.User;
+import lab.user.entities.UserRoles;
 import lab.user.repository.UserRepository;
 import lombok.NoArgsConstructor;
 
-@ApplicationScoped
+@LocalBean
+@Stateless
 @NoArgsConstructor(force = true)
 public class UserService {
     private final UserRepository userRepository;
+    private final Pbkdf2PasswordHash passwordHash;
+
     // private final SongRepository songRepository;
     private final FileSystemAccess fileSystem;
     
 
     @Inject
     public UserService(UserRepository userRepository,
-                    FileSystemAccess fileSystem
+                    FileSystemAccess fileSystem,
+                    @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash
                         //, SongRepository songRepository
                         ){
         this.userRepository = userRepository;
         this.fileSystem = fileSystem;
+        this.passwordHash = passwordHash;
         // this.songRepository = songRepository;
     }
 
-
+    @RolesAllowed(UserRoles.ADMIN)
     public Optional<User> find(UUID id) {
         return userRepository.find(id);
     }
+    @RolesAllowed(UserRoles.ADMIN)
+    public Optional<User> find(String name) {
+        return userRepository.findByName(name);
+    }
+
+    @RolesAllowed(UserRoles.ADMIN)
     public List<User> findAll() {
         return userRepository.findAll();
     }
-    @Transactional
+
+    @PermitAll
     public void create(User user) {
+        user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         userRepository.create(user);
     }
-    @Transactional
+
+    @PermitAll
     public void update(User user) {
+        user.setPassword(passwordHash.generate(user.getPassword().toCharArray()));
         userRepository.update(user);
     }
-    @Transactional
+
+    @RolesAllowed(UserRoles.ADMIN)
     public void delete(UUID id) {
         fileSystem.deleteAvatar(id);
         userRepository.delete(userRepository.find(id).orElseThrow());
     }
 
+    @PermitAll
     public Optional<byte[]> getAvatar(UUID id){
         return fileSystem.getAvatar(id);
     }
 
-    @Transactional 
+    @RolesAllowed(UserRoles.ADMIN)
+    //@Transactional 
     public void updateAvatar(UUID id, InputStream is) {
         userRepository.find(id).ifPresent(user -> {
             //try {
@@ -72,7 +90,9 @@ public class UserService {
            // }
         });
     }
-    @Transactional
+
+    @RolesAllowed(UserRoles.ADMIN)
+    //@Transactional
     public void updateAvatar(UUID id, byte[] is) {
         userRepository.find(id).ifPresent(user -> {
             //try {
@@ -84,9 +104,10 @@ public class UserService {
            // }
         });
     }
-
-@Transactional
-  public void deleteAvatar(UUID id) {
+    
+    @RolesAllowed(UserRoles.ADMIN)
+//@Transactional
+    public void deleteAvatar(UUID id) {
         userRepository.find(id).ifPresent(user -> {
             // try {
                 
@@ -99,5 +120,11 @@ public class UserService {
         });
     }
 
+    @PermitAll
+    public boolean verify(String name, String password) {
+        return find(name)
+                .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
+                .orElse(false);
+    }
 
 }
