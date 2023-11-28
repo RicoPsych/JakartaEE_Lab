@@ -9,9 +9,9 @@
         <!-- <h:outputStylesheet library="character" name="css/character_list.css"/>Automatically relocated to head. -->
 
         <article class="text--justified">
-            <header><h2>Albums</h2></header>
+            <header><h2>#{messages['nav.albums']}</h2></header>
 
-            <h:dataTable value="#{albumList.albums.albums}" var="album"
+            <h:dataTable id="albumsList" value="#{albumList.albums.albums}" var="album"
                          styleClass="table align-middle mb-0 bg-white" headerClass="bg-light">
                 <!-- <h:column>
                     <f:facet name="header">Portrait</f:facet>
@@ -20,35 +20,37 @@
                 </h:column> -->
 
                 <h:column>
-                    <f:facet name="header">Name</f:facet>
+                    <f:facet name="header">#{messages['name']}</f:facet>
                     <h:outputText value="#{album.name}"/>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">View</f:facet>
-                    <h:link outcome="/album/album_view.xhtml" value="View">
+                    <f:facet name="header">#{messages['view']}</f:facet>
+                    <h:link outcome="/album/album_view.xhtml" value="#{messages['view']}">
                         <f:param name="id" value="#{album.id}"/>
                     </h:link>
                 </h:column>
 
-                <h:column>
-                    <f:facet name="header">Edit</f:facet>
-                    <h:link outcome="/album/album_edit.xhtml" value="Edit">
+                
+                <h:column rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                    <f:facet name="header">#{messages['edit']}</f:facet>
+                    <h:link outcome="/album/album_edit.xhtml" value="#{messages['edit']}">
                         <f:param name="id" value="#{album.id}"/>
                     </h:link>
                 </h:column>
+    
 
-                <h:column>
-                    <f:facet name="header">Delete</f:facet>
+                <h:column rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                    <f:facet name="header">#{messages['delete']}</f:facet>
                     <h:form>
-                        <h:commandButton styleClass="btn" value="Delete"
-                                         action="#{albumList.deleteAction(album)}"/>
+                        <h:commandButton styleClass="btn" value="#{messages['delete']}"
+                        actionListener="#{albumList.deleteAction(album)}">
+                                         <f:ajax execute="@this" render=":albumsList"/></h:commandButton>
                     </h:form>
                 </h:column>
-
-                <f:facet name="footer">
-                    <h:button styleClass="btn" outcome="/album/album_create.xhtml"
-                              value="Add new album"/>
+                <f:facet name="footer" >
+                    <h:button styleClass="btn" outcome="/album/album_create.xhtml" value="#{messages['album.add']}"
+                        rendered="#{facesContext.externalContext.isUserInRole('admin')}" />
                 </f:facet>
             </h:dataTable>
         </article>

@@ -11,14 +11,14 @@
 
     <ui:define name="content">
         <article>
-            <header><h2>Create album</h2></header>
+            <header><h2>#{messages['album.createheader']}</h2></header>
             <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
 
             <div class="row">
                 <div class="col-4 p-2">
                     <div class="form-outline">
                         <h:inputText id="name" value="#{albumCreate.album.name}" styleClass="form-control"/>
-                        <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                        <h:outputLabel for="name" value="#{messages['name']}:" styleClass="form-label"/>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <div class="col-4 p-2">
                     <div class="form-outline">
                         <h:inputText id="releaseDate" value="#{albumCreate.album.releaseDate}" styleClass="form-control"/>
-                        <h:outputLabel for="releaseDate" value="Release Date:" styleClass="form-label"/>
+                        <h:outputLabel for="releaseDate" value="#{messages['album.release']}:" styleClass="form-label"/>
                     </div>
                 </div>
             </div>
@@ -38,18 +38,18 @@
                         <h:selectOneMenu value = "#{albumCreate.album.genre}" styleClass="form-control active"> 
                             <f:selectItems value="#{albumCreate.genres}"/>
                         </h:selectOneMenu>  
-                        <h:outputLabel for="genre" value="Genre:" styleClass="form-label"/>
+                        <h:outputLabel for="genre" value="#{messages['album.genre']}:" styleClass="form-label"/>
                     </div>
                 </div>
             </div>
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-secondary" value="Create"
+                        <h:commandButton styleClass="btn btn-secondary" value="#{messages['create']}"
                                          action="#{albumCreate.saveAction()}"/>
                     </div>
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-secondary" value="Cancel"
+                        <h:commandButton styleClass="btn btn-secondary" value="#{messages['cancel']}"
                                          action="#{albumCreate.cancelAction()}"/>
                     </div>
                 </div>

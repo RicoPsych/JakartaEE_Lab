@@ -19,7 +19,7 @@
 
                         <div class="row mb-2">
                             <div class="col-6">
-                                Duration: 
+                                #{messages['song.duration']}: 
                             </div>  
                             <div class="col-6">
                                 <h:outputText value="#{songView.song.duration}"/>
@@ -27,7 +27,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">
-                                Rating: 
+                                #{messages['song.rating']}: 
                             </div>  
                             <div class="col-6">
                                 <h:outputText value="#{songView.song.rating}"/>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-6">
-                                Album: 
+                                #{messages['album']}: 
                             </div>  
                             <div class="col-6">
                                 <h:link outcome="/album/album_view.xhtml" value="#{songView.song.album.name}">

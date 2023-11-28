@@ -73,7 +73,7 @@ public class AlbumEdit implements Serializable {
         service.update(album.saveEntity(service.find(id).orElseThrow()));
         for (Song song : songs) {
             song.setAlbum(service.find(id).orElseThrow());
-            songService.update(song);
+            songService.updateForCallerPrincipal(song);
         }
 
 //        String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();

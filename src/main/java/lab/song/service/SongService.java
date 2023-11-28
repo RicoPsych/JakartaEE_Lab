@@ -17,6 +17,7 @@ import jakarta.security.enterprise.SecurityContext;
 import jakarta.transaction.Transactional;
 import lab.album.repository.AlbumRepository;
 import lab.song.entities.Song;
+import lab.song.observer.event.SongEvent;
 import lab.song.repository.SongRepository;
 import lab.user.entities.User;
 import lab.user.entities.UserRoles;
@@ -112,7 +113,9 @@ public class SongService {
     public void create(Song song) {
         songRepository.create(song);
     }
+    
     @RolesAllowed(UserRoles.USER)
+    @SongEvent
     public void createForCallerPrincipal(Song song) {
         User user = userRepository.findByName(securityContext.getCallerPrincipal().getName())
                 .orElseThrow(IllegalStateException::new);
@@ -121,14 +124,19 @@ public class SongService {
         create(song);
     }
 
-
     @RolesAllowed(UserRoles.USER)
-    public void update(Song song) {
+    @SongEvent
+    public void updateForCallerPrincipal(Song song) {
         checkAdminRoleOrOwner(songRepository.find(song.getId()));
+        User user = userRepository.findByName(securityContext.getCallerPrincipal().getName())
+        .orElseThrow(IllegalStateException::new);
+        
+        song.setOwner(user);
         songRepository.update(song);
     }
 
     @RolesAllowed(UserRoles.USER)
+    @SongEvent
     public void delete(UUID id) {
         checkAdminRoleOrOwner(songRepository.find(id));
         songRepository.delete(songRepository.find(id).orElseThrow());

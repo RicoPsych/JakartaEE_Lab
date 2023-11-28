@@ -93,7 +93,7 @@ public class RestSongController implements SongController {
             albumService.find(album_id).orElseThrow(NotFoundException::new),
             id);
             if(songService.find(song.getId()).isPresent()){
-                songService.update(song);
+                songService.updateForCallerPrincipal(song);
             }
             else{
                 songService.create(song);

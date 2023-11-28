@@ -45,7 +45,7 @@ public class SongView implements Serializable {
      * field and initialized during init of the view.
      */
     public void init() throws IOException {
-        Optional<Song> song = songService.find(id);
+        Optional<Song> song = songService.findForCallerPrincipal(id);
         if (song.isPresent()) {
             this.song = SongModel.mapper(song.get());
         } else {

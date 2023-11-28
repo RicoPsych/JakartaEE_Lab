@@ -10,6 +10,7 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import lab.filesystemaccess.FileSystemAccess;
 import lab.user.entities.User;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class UserService {
     private final UserRepository userRepository;
     private final Pbkdf2PasswordHash passwordHash;
-
+    private final SecurityContext securityContext;
     // private final SongRepository songRepository;
     private final FileSystemAccess fileSystem;
     
@@ -31,26 +32,31 @@ public class UserService {
     @Inject
     public UserService(UserRepository userRepository,
                     FileSystemAccess fileSystem,
-                    @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash
-                        //, SongRepository songRepository
+                    @SuppressWarnings("CdiInjectionPointsInspection") Pbkdf2PasswordHash passwordHash,
+                    @SuppressWarnings("CdiInjectionPointsInspection") SecurityContext securityContext
+                    //, SongRepository songRepository
                         ){
         this.userRepository = userRepository;
         this.fileSystem = fileSystem;
         this.passwordHash = passwordHash;
+        this.securityContext = securityContext;
         // this.songRepository = songRepository;
     }
 
     @RolesAllowed(UserRoles.ADMIN)
     public Optional<User> find(UUID id) {
+        checkAdminRole();
         return userRepository.find(id);
     }
     @RolesAllowed(UserRoles.ADMIN)
     public Optional<User> find(String name) {
+        checkAdminRole();
         return userRepository.findByName(name);
     }
 
     @RolesAllowed(UserRoles.ADMIN)
     public List<User> findAll() {
+        checkAdminRole();
         return userRepository.findAll();
     }
 
@@ -94,27 +100,12 @@ public class UserService {
     @RolesAllowed(UserRoles.ADMIN)
     //@Transactional
     public void updateAvatar(UUID id, byte[] is) {
-        userRepository.find(id).ifPresent(user -> {
-            //try {
-                fileSystem.writeAvatar(id, is);
-//                user.setAvatar(is.readAllBytes());
-              //  userRepository.update(user);
-            //} catch (IOException ex) {
-             //   throw new IllegalStateException(ex);
-           // }
-        });
+        userRepository.find(id).ifPresent(user -> {fileSystem.writeAvatar(id, is); });
     }
     
     @RolesAllowed(UserRoles.ADMIN)
-//@Transactional
     public void deleteAvatar(UUID id) {
         userRepository.find(id).ifPresent(user -> {
-            // try {
-                
-            //     //userRepository.update(user);
-            // } catch (IOException ex) {
-            //     throw new IllegalStateException(ex);
-            // }
         fileSystem.deleteAvatar(id);
 
         });
@@ -125,6 +116,12 @@ public class UserService {
         return find(name)
                 .map(user -> passwordHash.verify(password.toCharArray(), user.getPassword()))
                 .orElse(false);
+    }
+
+    private void checkAdminRole() throws SecurityException {
+        if (!securityContext.isCallerInRole(UserRoles.ADMIN)) {
+            throw new SecurityException("Caller not authorized.");
+        }
     }
 
 }

@@ -12,14 +12,14 @@
 
     <ui:define name="content">
         <article>
-            <header><h2>Edit album info</h2></header>
+            <header><h2>#{messages['album.editheader']}</h2></header>
             <h:form styleClass="container" onreset="onReset()" enctype="multipart/form-data">
             
                 <div class="row">
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="name" value="#{albumEdit.album.name}" styleClass="form-control"/>
-                            <h:outputLabel for="name" value="Name:" styleClass="form-label"/>
+                            <h:outputLabel for="name" value="#{messages['name']}:" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="col-4 p-2">
                         <div class="form-outline">
                             <h:inputText id="releaseDate" value="#{albumEdit.album.releaseDate}" styleClass="form-control"/>
-                            <h:outputLabel for="releaseDate" value="Release Date:" styleClass="form-label"/>
+                            <h:outputLabel for="releaseDate" value="#{messages['album.release']}:" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
@@ -49,14 +49,14 @@
                             <h:selectOneMenu value = "#{albumEdit.album.genre}" styleClass="form-control active"> 
                                 <f:selectItems value="#{albumEdit.genres}"/>
                             </h:selectOneMenu>  
-                            <h:outputLabel for="genre" value="Genre:" styleClass="form-label"/>
+                            <h:outputLabel for="genre" value="#{messages['album.genre']}:" styleClass="form-label"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
-                        <h:commandButton styleClass="btn btn-primary" value="Update"
+                        <h:commandButton styleClass="btn btn-primary" value="#{messages['update']}"
                                          action="#{albumEdit.saveAction()}"/>
                     </div>
                     <div class="col-2 p-2 text-center">

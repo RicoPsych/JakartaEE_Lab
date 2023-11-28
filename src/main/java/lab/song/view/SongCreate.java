@@ -82,7 +82,8 @@ public class SongCreate implements Serializable {
      * @return characters list navigation case
      */
     public String saveAction() {
-        songService.create(song.saveEntity(albumService.find(song.getAlbum().getId()).orElseThrow()));
+        
+        songService.createForCallerPrincipal(song.saveEntity(albumService.find(song.getAlbum().getId()).orElseThrow()));
         return "/album/album_view.xhtml?faces-redirect=true&id="+song.getAlbum().getId();
     }
 

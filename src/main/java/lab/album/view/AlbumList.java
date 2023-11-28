@@ -50,11 +50,12 @@ public class AlbumList implements Serializable {
      * @param album character to be removed
      * @return navigation case to list_characters
      */
-    public String deleteAction(AlbumsModel._Album album) {
+    public void deleteAction(AlbumsModel._Album album) {
         service.delete(album.getId());
         songService.findByAlbum(album.getId())
             .ifPresent(songs->songs.forEach(song->songService.delete(song.getId())));
-        return "albums_list?faces-redirect=true";
+        //return "albums_list?faces-redirect=true";
+        albums = null;
     }
 
 }

@@ -53,12 +53,21 @@ public class AlbumView implements Serializable {
     public void init() throws IOException {
         Optional<Album> album = service.find(id);
         if (album.isPresent()) {
-            this.album = AlbumModel.mapper(album.get(),songService.findByAlbum(album.get().getId()).get());
+            this.album = AlbumModel.mapper(album.get(),songService.findByAlbumForCallerPrincipal(album.get().getId()).get());
         } else {
             FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Album not found");
         }
     }
 
+    public AlbumModel getAlbum() throws IOException{
+        Optional<Album> album = service.find(id);
+        if (album.isPresent()) {
+            this.album = AlbumModel.mapper(album.get(),songService.findByAlbumForCallerPrincipal(album.get().getId()).get());
+        } else {
+            FacesContext.getCurrentInstance().getExternalContext().responseSendError(HttpServletResponse.SC_NOT_FOUND, "Album not found");
+        }
+        return this.album;
+    }
 
     /**
      * Action for clicking delete action.
@@ -66,8 +75,10 @@ public class AlbumView implements Serializable {
      * @param album character to be removed
      * @return navigation case to list_characters
      */
-    public String deleteSongAction(AlbumModel._Song song) {
+    public void deleteSongAction(AlbumModel._Song song) {
         songService.delete(song.getId());
-        return "album_view?faces-redirect=true&id="+id;
+        //album.setSongs(null);
+        album = null;
+        //return "album_view?faces-redirect=true&id="+id;
     }
 }

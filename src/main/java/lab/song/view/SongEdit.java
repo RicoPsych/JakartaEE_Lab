@@ -62,7 +62,7 @@ public class SongEdit implements Serializable {
      * field and initialized during init of the view.
      */
     public void init() throws IOException {
-        Optional<Song> song = songService.find(id);
+        Optional<Song> song = songService.findForCallerPrincipal(id);
         if (song.isPresent()) {
             this.song = SongEditModel.mapper(song.get());
             albums = albumService.findAll().stream()
@@ -80,9 +80,10 @@ public class SongEdit implements Serializable {
      * @return navigation case to the same page
      */
     public String saveAction() {
+        songService.findForCallerPrincipal(id).orElseThrow(); //???
         Song newSong = song.saveEntity(albumService.find(song.getAlbum().getId()).orElseThrow());
         newSong.setId(id);
-        songService.update(newSong);
+        songService.updateForCallerPrincipal(newSong);
 
         // String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
         // return viewId + "?faces-redirect=true&includeViewParams=true";
