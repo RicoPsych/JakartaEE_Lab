@@ -1,17 +1,23 @@
 
+# @no-cookie-jar
+
 GET http://localhost:9080/spotify-mock/api/albums
- 
+Authorization: Basic Pawel:user 
 ###
- 
+# @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792
-###
+Authorization: Basic Pawel:user 
 
+###
+# @no-cookie-jar
 DELETE http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792
+Authorization: Basic Pawel:user 
 
 ###
-
+# @no-cookie-jar
 PUT http://localhost:9080/spotify-mock/api/albums/33d1dc17-b337-4bdc-812b-0417918c1524/
 Content-Type: application/json
+Authorization: Basic Pawel:user 
 
 {
   "genre": "Indie",
@@ -19,9 +25,10 @@ Content-Type: application/json
   "releaseDate": "2021-11-10"
 }
 ###
-
+# @no-cookie-jar
 POST http://localhost:9080/spotify-mock/api/albums/
 Content-Type: application/json
+Authorization: Basic Pawel:user 
 
 {
   "genre": "Indie",
@@ -29,27 +36,31 @@ Content-Type: application/json
   "releaseDate": "2021-11-10"
 }
 ###
-
- 
+# @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/songs
+Authorization: Basic Pawel:user 
+
 ###
-
-
-
+# @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792/songs
-###
+Authorization: Basic Pawel:user 
 
+###
+# @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/008d02dd-e112-4c6f-b44d-7d4c9fc04a08
+Authorization: Basic Pawel:user 
 
 ###
-
-
+# @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/albums/6c3f7514-d5a2-4975-8bda-99dd7b243792/songs/68f62a60-710a-4521-997c-56c842d39339
+Authorization: Basic Pawel:user 
 
 ###
-
+# @no-cookie-jar
 PUT http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
 Content-Type: application/json
+Authorization: Basic Pawel:user 
+
 
 {
   "duration": 300,
@@ -57,9 +68,10 @@ Content-Type: application/json
   "rating": 4.5
 }
 ###
-
+# @no-cookie-jar
 POST http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/
 Content-Type: application/json
+Authorization: Basic Pawel:user 
 
 {
   "duration": 300,
@@ -68,7 +80,21 @@ Content-Type: application/json
 }
 
 ###
-
+# @no-cookie-jar
 DELETE http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
+Authorization: Basic Pawel:user 
 
 ###
+# @no-cookie-jar
+GET http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
+Authorization: Basic Pawel:user
+
+###
+# @no-cookie-jar
+GET http://localhost:9080/spotify-mock/api/songs/
+Authorization: Basic Pawel:user
+
+###
+# @no-cookie-jar
+DELETE http://localhost:9080/spotify-mock/api/albums/8d2e3678-1678-4550-8aeb-1b9223802356/songs/3a3d46fa-47d8-4a0d-9433-17b14a0129cc
+Authorization: Basic Pawel:user 

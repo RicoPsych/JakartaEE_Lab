@@ -1,33 +1,39 @@
 ###
 # @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/users
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
+
 ###
 # @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/songs
 Authorization: Basic Pawel:user
 ###
 # @no-cookie-jar
-GET http://localhost:9080/spotify-mock/api/albums
-Authorization: Basic Pawel:user
+GET http://localhost:9080/spotify-mock/api/songs
+Authorization: Basic Stefan:admin
 
 
 ###
 # @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
+
 ###
 # @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/users/f901e668-364c-4f66-ad9d-a3a905f80ebf/avatar
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
+
 ###
 # @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/songs/008d02dd-e112-4c6f-b44d-7d4c9fc04a08
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
+
 ###
 # @no-cookie-jar
 POST http://localhost:9080/spotify-mock/api/users
 Content-Type: application/json
+Authorization: Basic Stefan:admin
+
 
 {
   "name": "Krzychu",
@@ -37,18 +43,18 @@ Content-Type: application/json
 ###
 # @no-cookie-jar
 DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
 
 ###
 # @no-cookie-jar
 DELETE http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
 
 ###
 # @no-cookie-jar
 PUT http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
 Content-Type: multipart/form-data; boundary=boundary
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
 
 --boundary
 Content-Disposition: form-data; name="avatar"; filename="sigrid.png'
@@ -60,5 +66,35 @@ Content-Disposition: form-data; name="avatar"; filename="sigrid.png'
 
 # @no-cookie-jar
 GET http://localhost:9080/spotify-mock/api/users/33d1dc17-b337-4bdc-812b-0417918c1524/avatar
-Authorization: Basic Pawel:user
+Authorization: Basic Stefan:admin
+
 ###
+
+
+# @no-cookie-jar
+POST http://localhost:9080/spotify-mock/api/albums/
+Content-Type: application/json
+Authorization: Basic Stefan:admin 
+
+{
+  "genre": "Indie",
+  "name": "Sand",
+  "releaseDate": "2021-11-10"
+}
+###
+
+
+# @no-cookie-jar
+PUT http://localhost:9080/spotify-mock/api/albums/3512cd21-cd34-4481-a325-889fc9cbcf24
+Content-Type: application/json
+Authorization: Basic Stefan:admin 
+
+{
+  "genre": "Indie",
+  "name": "Sand",
+  "releaseDate": "2021-11-10"
+}
+###
+# @no-cookie-jar
+DELETE http://localhost:9080/spotify-mock/api/albums/3512cd21-cd34-4481-a325-889fc9cbcf24
+Authorization: Basic Stefan:admin 

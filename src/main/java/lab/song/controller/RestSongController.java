@@ -96,7 +96,7 @@ public class RestSongController implements SongController {
                 songService.updateForCallerPrincipal(song);
             }
             else{
-                songService.create(song);
+                songService.createForCallerPrincipal(song);
             }
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
             .path(SongController.class, "getSong")
@@ -121,7 +121,7 @@ public class RestSongController implements SongController {
             Song song = PutSongRequest.mapper(request,
             albumService.find(album_id).orElseThrow(NotFoundException::new),
             UUID.randomUUID());
-            songService.create(song);
+            songService.createForCallerPrincipal(song);
 
             response.setHeader("Location", uriInfo.getBaseUriBuilder()
             .path(SongController.class, "getSong")
