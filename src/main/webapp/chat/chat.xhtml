@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewAction action="#{messageServiceView.init()}"/>
+    </f:metadata>
+
+    <ui:define name="content">
+        <aside>
+            <div class="form-outline">
+                <textarea class="form-control" rows="4" id="messageContainer" readonly="readonly"/>
+                <label for="messageContainer" class="form-label">#{messages.messages}</label>
+                
+            </div>
+
+            <div class="form-outline">
+                <h:form styleClass="container" onreset="onReset()"   enctype="multipart/form-data">
+                    <div class="form-outline">
+                    <h:inputText id="msg" value="#{messageServiceView.msg.msg}" styleClass="form-control"/>
+                    <h:outputLabel for="msg" value="Text" styleClass="form-label"/>
+                    </div>
+                    <div class="form-outline">
+                    <h:inputText id="user" value="#{messageServiceView.msg.user}" styleClass="form-control"/>
+                    <h:outputLabel for="user" value="User" styleClass="form-label"/>
+                    </div>
+                    <h:commandButton styleClass="btn btn-secondary" value="Send to All"
+                                    action="#{messageServiceView.SendMessage()}">
+                                    <f:ajax execute="@form" render="@none"/>
+                                    </h:commandButton>
+
+                    <h:commandButton styleClass="btn btn-secondary" value="Send to User"
+                    action="#{messageServiceView.SendMessageUser()}">
+                    <f:ajax execute="@form" render="@none"/>
+                    </h:commandButton>
+
+
+                </h:form>
+            </div>
+        </aside>
+    </ui:define>
+
+</ui:composition>

@@ -15,9 +15,18 @@
             <h:outputStylesheet library="default" name="css/main.css"/>
             <h:outputScript library="webjars" name="mdb-ui-kit/6.4.0/js/mdb.min.js"/>
             <h:outputScript library="mdb" name="js/main.js" target="body"/>
+            <h:outputScript library="push" name="js/message.js" target="head"/>
+            
         </h:head>
 
         <h:body>
+            <f:websocket channel="broadcastChannel" scope="application" onmessage="receive"/>
+            <!-- By defailt user channel is session scoped.-->
+            <f:websocket rendered="#{facesContext.externalContext.userPrincipal != null}" channel="userChannel"
+                         user="#{facesContext.externalContext.userPrincipal.name}" onmessage="receive"/>
+
+
+
             <div class="container">
                 <header class="mb-4 mt-4">
                     <h1>Spotify Mock 
@@ -47,6 +56,13 @@
                                 <li class="nav-item">
                                     <h:link styleClass="nav-link"
                                             outcome="/user/user_list.xhtml">#{messages['nav.users']}</h:link>
+                                </li>
+                            </h:panelGroup>
+
+                            <h:panelGroup rendered="#{facesContext.externalContext.userPrincipal != null}">
+                                <li class="nav-item">
+                                    <h:link styleClass="nav-link"
+                                            outcome="/chat/chat.xhtml">Chat</h:link>
                                 </li>
                             </h:panelGroup>
                         </ul>

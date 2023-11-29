@@ -39,6 +39,16 @@
 
     <security-constraint>
         <web-resource-collection>
+            <web-resource-name>chat</web-resource-name>
+            <url-pattern>/chat/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
             <web-resource-name>song</web-resource-name>
             <url-pattern>/song/*</url-pattern>
         </web-resource-collection>
