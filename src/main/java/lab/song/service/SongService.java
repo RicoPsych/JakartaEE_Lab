@@ -130,7 +130,7 @@ public class SongService {
         checkAdminRoleOrOwner(songRepository.find(song.getId()));
         User user = userRepository.findByName(securityContext.getCallerPrincipal().getName())
         .orElseThrow(IllegalStateException::new);
-        
+
         song.setOwner(user);
         songRepository.update(song);
     }

@@ -3,6 +3,7 @@ package lab.song.model;
 import java.util.UUID;
 
 import lab.album.entities.Album;
+import lab.album.model.converter.DateModelConverter;
 import lab.song.entities.Song;
 import lab.song.model.converter._AlbumModel;
 import lombok.AccessLevel;
@@ -26,7 +27,8 @@ public class SongEditModel {
     private float rating;
     private int duration;
     private _AlbumModel album;
-
+    private Long version;
+    
 
     public static SongEditModel mapper(Song song){
         return SongEditModel.builder()
@@ -34,6 +36,7 @@ public class SongEditModel {
         .duration(song.getDuration())
         .rating(song.getRating())
         .album(_AlbumModel.mapper(song.getAlbum()))
+        .version(song.getVersion())
 //          .owner(song.getOwner().getName())
         .build();
     }
@@ -44,6 +47,8 @@ public class SongEditModel {
         .rating(this.getRating())
         .duration(this.getDuration())
         .album(album)
+        .version(this.getVersion())
+       // .creationDateTime(entity.getCreationDateTime())
         .build();
     }
 }

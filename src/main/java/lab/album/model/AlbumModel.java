@@ -1,6 +1,7 @@
 package lab.album.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,6 +40,9 @@ public class AlbumModel {
     public static class _Song {
         private UUID id;
         private String name;
+        private Long version;
+        private LocalDateTime creationDateTime;
+        private LocalDateTime updateDateTime;
     }
     
     
@@ -55,6 +59,9 @@ public class AlbumModel {
                 .map(song -> AlbumModel._Song.builder()
                     .id(song.getId())
                     .name(song.getName())
+                    .creationDateTime(song.getCreationDateTime())
+                    .updateDateTime(song.getUpdateDateTime())
+                    .version(song.getVersion())
                 .build())
                 .toList())
             .build();

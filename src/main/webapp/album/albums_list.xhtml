@@ -48,6 +48,9 @@
                                          <f:ajax execute="@this" render=":albumsList"/></h:commandButton>
                     </h:form>
                 </h:column>
+
+
+
                 <f:facet name="footer" >
                     <h:button styleClass="btn" outcome="/album/album_create.xhtml" value="#{messages['album.add']}"
                         rendered="#{facesContext.externalContext.isUserInRole('admin')}" />
