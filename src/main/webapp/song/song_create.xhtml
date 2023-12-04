@@ -17,8 +17,14 @@
             <div class="row">
                 <div class="col-4 p-2">
                     <div class="form-outline">
-                        <h:inputText id="name" value="#{songCreate.song.name}" styleClass="form-control"/>
+                        <h:inputText id="name" value="#{songCreate.song.name}"                   
+                        binding="#{nameInput}"
+                        styleClass="#{nameInput.valid ? 'form-control' : 'is-invalid form-control'}">
+               <!-- <f:validateBean
+                       validationGroups="lab.song.validation.group.SongModelGroup, jakarta.validation.groups.Default"/> -->
+                    </h:inputText>
                         <h:outputLabel for="name" value="#{messages['name']}:" styleClass="form-label"/>
+                        <h:message for="name" styleClass="invalid-feedback"/>
                     </div>
                 </div>
             </div>
@@ -26,16 +32,29 @@
             <div class="row">
                 <div class="col-4 p-2">
                     <div class="form-outline">
-                        <h:inputText id="duration" value="#{songCreate.song.duration}" styleClass="form-control"/>
+                        <h:inputText id="duration" value="#{songCreate.song.duration}"                   
+                        binding="#{durationInput}"
+                        styleClass="#{durationInput.valid ? 'form-control' : 'is-invalid form-control'}">
+                        <!-- <f:validateBean
+                            validationGroups="lab.song.validation.group.SongModelGroup, jakarta.validation.groups.Default"/> -->
+                        </h:inputText>
+
                         <h:outputLabel for="duration" value="#{messages['song.duration']}:" styleClass="form-label"/>
+                        <h:message for="duration" styleClass="invalid-feedback"/>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-4 p-2">
                     <div class="form-outline">
-                        <h:inputText id="rating" value="#{songCreate.song.rating}" styleClass="form-control"/>
+                        <h:inputText id="rating" value="#{songCreateModel.rating}" 
+                            binding="#{ratingInput}"
+                            styleClass="#{ratingInput.valid ? 'form-control' : 'is-invalid form-control'}">
+                        <f:validateBean
+                            validationGroups="lab.song.validation.group.SongModelGroup, jakarta.validation.groups.Default"/>
+                        </h:inputText>
                         <h:outputLabel for="rating" value="#{messages['song.rating']}:" styleClass="form-label"/>
+                        <h:message for="rating" styleClass="invalid-feedback"/>
                     </div>
                 </div>
             </div>
@@ -47,9 +66,17 @@
                             <f:selectItems value="#{songCreate.albums}" var="album" itemLabel="#{album.name}"/>
                         </h:selectOneMenu>  
                         <h:outputLabel for="album" value="#{messages['album']}:" styleClass="form-label"/>
+                        <h:message for="album" styleClass="invalid-feedback"/>
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-4 p-2">
+                    <h:message styleClass="text-danger" for="song"/>
+                </div>
+            </div>
+
 
                 <div class="row">
                     <div class="col-2 p-2 text-center">
@@ -61,6 +88,9 @@
                                          action="#{songCreate.cancelAction()}"/>
                     </div>
                 </div>
+
+                <f:validateWholeBean id="song" value="#{songCreateModel}"
+                validationGroups="lab.song.validation.group.SongModelGroup"/>
             </h:form>
         </article>
     </ui:define>

@@ -42,11 +42,12 @@ public class SongCreate implements Serializable {
      * Character exposed to the view.
      */
     @Getter
-    private SongCreateModel song;
+    private final SongCreateModel song;
 
 
     @Inject
-    public SongCreate(AlbumService albumService,SongService songService) {
+    public SongCreate(AlbumService albumService,SongService songService,SongCreateModel song) {
+        this.song = song;
         this.albumService = albumService;
         this.songService = songService;
     }
@@ -57,9 +58,10 @@ public class SongCreate implements Serializable {
      * rendered. Conversation should be started in f:metadata/f:event.
      */
     public void init() {
-        song = SongCreateModel.builder()
-            .id(UUID.randomUUID())
-            .build();
+        song.setId(UUID.randomUUID());
+        // song = SongCreateModel.builder()
+        //     .id(UUID.randomUUID())
+        //     .build();
         albums = albumService.findAll().stream()
             .map(album->_AlbumModel.mapper(album))
         .collect(Collectors.toList());
