@@ -8,8 +8,12 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lab.album.entities.Album;
 import lab.album.repository.AlbumRepository;
+import lab.user.entities.User;
 
 
 @Dependent
@@ -36,7 +40,12 @@ public class AlbumPersistenceRepository implements AlbumRepository {
 
     @Override
     public List<Album> findAll() {
-        return em.createQuery("select c from Album c", Album.class).getResultList();
+        // return em.createQuery("select c from Album c", Album.class).getResultList();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Album> query = cb.createQuery(Album.class);
+        Root<Album> root = query.from(Album.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package lab.song.service;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.SecurityContext;
 import jakarta.transaction.Transactional;
+import lab.album.entities.Album;
 import lab.album.repository.AlbumRepository;
 import lab.song.entities.Song;
 import lab.song.observer.event.SongEvent;
@@ -142,6 +144,12 @@ public class SongService {
         songRepository.delete(songRepository.find(id).orElseThrow());
     }
 
+    @RolesAllowed(UserRoles.ADMIN)
+    public List<Song> findByFilter(UUID id, User user, String name, Float rating, Album album,
+    Integer duration, Long version, LocalDateTime updateDateTime, LocalDateTime creationDateTime) {
+        return songRepository.findByFilter(id, user, name, rating, album, duration, version, updateDateTime, creationDateTime);
+    }
+
     private void checkAdminRoleOrOwner(Optional<Song> song) throws EJBAccessException {
         if (securityContext.isCallerInRole(UserRoles.ADMIN)) {
             return;
@@ -153,5 +161,6 @@ public class SongService {
         }
         throw new EJBAccessException("Caller not authorized.");
     }
+
 
 }

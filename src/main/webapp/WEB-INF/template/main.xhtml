@@ -65,6 +65,13 @@
                                             outcome="/chat/chat.xhtml">Chat</h:link>
                                 </li>
                             </h:panelGroup>
+
+                            <h:panelGroup rendered="#{facesContext.externalContext.isUserInRole('admin')}">
+                                <li class="nav-item">
+                                    <h:link styleClass="nav-link"
+                                            outcome="/song/song_search.xhtml">Songs</h:link>
+                                </li>
+                            </h:panelGroup>
                         </ul>
                     </div>
                 </nav>

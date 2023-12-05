@@ -9,7 +9,11 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lab.user.entities.User;
+import lab.user.entities.User_;
 import lab.user.repository.UserRepository;
 
 @Dependent
@@ -28,7 +32,12 @@ public class UserPersistenceRepository implements UserRepository {
     
     @Override
     public List<User> findAll() {
-        return em.createQuery("select c from User c", User.class).getResultList();
+//        return em.createQuery("select c from User c", User.class).getResultList();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<User> query = cb.createQuery(User.class);
+        Root<User> root = query.from(User.class);
+        query.select(root);
+        return em.createQuery(query).getResultList();
     }
 
     @Override
@@ -49,9 +58,18 @@ public class UserPersistenceRepository implements UserRepository {
     @Override
     public Optional<User> findByName(String name) {
         try {
-            return Optional.of(em.createQuery("select u from User u where u.name = :name", User.class)
-                    .setParameter("name", name)
-                    .getSingleResult());
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<User> query = cb.createQuery(User.class);
+            Root<User> root = query.from(User.class);
+            query.select(root)
+                    .where(cb.equal(root.get(User_.name), name)
+                    );
+            return Optional.of(em.createQuery(query).getSingleResult());
+
+
+            // return Optional.of(em.createQuery("select u from User u where u.name = :name", User.class)
+            //         .setParameter("name", name)
+            //         .getSingleResult());
         } catch (NoResultException ex) {
             return Optional.empty();
         }
